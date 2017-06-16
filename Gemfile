@@ -54,3 +54,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'shopify_app'
+gem 'rack-cors', :require => 'rack/cors'
+gem 'devise_token_auth'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'

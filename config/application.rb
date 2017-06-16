@@ -8,6 +8,15 @@ Bundler.require(*Rails.groups)
 
 module Selasfora
   class Application < Rails::Application
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+          :headers => :any,
+          :expose  => ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+          :methods => [:get, :post, :options, :delete, :put]
+      end
+    end
     config.action_dispatch.default_headers['P3P'] = 'CP="Not used"'
     config.action_dispatch.default_headers.delete('X-Frame-Options')
     # Initialize configuration defaults for originally generated Rails version.
