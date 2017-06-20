@@ -90,4 +90,13 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   
   config.action_mailer.default_url_options = { host: "selasfora-dev.herokuapp.com" }
+  ActionMailer::Base.smtp_settings = {
+    :user_name            => 'deepakvig@gmail.com',
+    :password             => 'iiit1234',
+    :address              => "smtp.sendgrid.net",
+    :port                 => 587,
+    :enable_starttls_auto => true,
+    :authentication       => :plain,
+    :domain               => "selasfora-dev.herokuapp.com"
+  }
 end
