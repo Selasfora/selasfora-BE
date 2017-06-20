@@ -92,6 +92,7 @@ GEM
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    json (2.1.0)
     jwt (1.5.1)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -193,6 +194,8 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
+    sendgrid (1.2.4)
+      json
     shopify_api (4.9.0)
       activeresource (>= 3.0.0)
       rack
@@ -255,6 +258,7 @@ DEPENDENCIES
   rails (~> 5.1.1)
   sass-rails (~> 5.0)
   selenium-webdriver
+  sendgrid
   shopify_app
   spring
   spring-watcher-listen (~> 2.0.0)
