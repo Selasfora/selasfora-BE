@@ -89,7 +89,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   
-  config.action_mailer.default_url_options = { host: "selasfora-dev.herokuapp.com" }
+  config.action_mailer.default_url_options = { host: "selasfora-staging.herokuapp.com" }
   ActionMailer::Base.smtp_settings = {
     :user_name            => 'deepakvig@gmail.com',
     :password             => 'iiit1234',
@@ -97,6 +97,6 @@ Rails.application.configure do
     :port                 => 587,
     :enable_starttls_auto => true,
     :authentication       => :plain,
-    :domain               => "selasfora-dev.herokuapp.com"
+    :domain               => "selasfora-staging.herokuapp.com"
   }
 end
