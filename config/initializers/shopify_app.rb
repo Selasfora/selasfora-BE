@@ -1,7 +1,7 @@
 ShopifyApp.configure do |config|
-  config.application_name = "My Shopify App"
-  config.api_key = "4a41f7b203cb4dbbb266291955f3b405"
-  config.secret = "cb68e78faf60d40b18b2b5158e229500"
+  config.application_name = "selafora-dev"
+  config.api_key = "3abd3e98ba88164a0b4e84acd1d16760"
+  config.secret = "315ed00fc2dd34a5b794ea39915ed591"
   config.scope = "read_orders, read_products"
   config.embedded_app = true
   config.webhooks = [
