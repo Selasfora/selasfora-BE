@@ -3,12 +3,12 @@ class UsersController < ApplicationController
   # before_action :set_user, only: [:update]
 
   def index
-    @users = User.all
-    render json: @users
+    render json: nil
   end
 
   def edit
-
+    count = ShopifyAPI::Product.count
+    render json: count
   end
 
   def update
