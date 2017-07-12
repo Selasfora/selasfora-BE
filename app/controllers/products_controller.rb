@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
   def getAllProducts
     page_limit = params[:limit] || 50
     page_num = params[:page] || 1
+    #TODO put shop and credentials in config file
     all_products = ShopifyAPI::Session.temp("selafore-staging.myshopify.com", "c3973c904c916f7865223c8e3cd754aa") { ShopifyAPI::Product.find(:all, :params => {:limit => page_limit, :page => page_num}) }
     render json: all_products 
   end

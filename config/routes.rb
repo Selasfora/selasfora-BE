@@ -11,6 +11,19 @@ Rails.application.routes.draw do
 
   get '/products/bracelet', to: 'products#getAllBraceletProducts'
 
+  get '/blogs', to: 'blogs#getAllBlogs'
+
+  get '/blogs/:id', to: 'blogs#getSpecifyBlog'
+
+  get '/blogs/:id/articles', to: 'blogs#getArticlesForBlog'
+
+  get '/articles', to: 'blogs#getAllArticles'
+
+  get '/pages', to: 'pages#getAllPages'
+
+  get '/pages/:handle', to: 'pages#getSpecifyPage'
+
+
   mount_devise_token_auth_for 'User', at: 'auth'
   root :to => 'orders#index'
   mount ShopifyApp::Engine, at: '/'
