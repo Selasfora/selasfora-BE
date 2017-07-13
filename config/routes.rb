@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   get '/products/', to: 'products#getAllProducts'
 
+  get '/product/:id', to: 'products#getSingleProduct'
+
   get '/products/charm', to: 'products#getAllCharmProducts'
 
   get '/products/bracelet', to: 'products#getAllBraceletProducts'
