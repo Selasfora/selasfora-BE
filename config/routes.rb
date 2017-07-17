@@ -25,6 +25,10 @@ Rails.application.routes.draw do
 
   get '/pages/:handle', to: 'pages#getSpecifyPage'
 
+  post '/newsletter', to: 'newsletter#create'
+
+  get '/newsletter', to: 'newsletter#get'
+
 
   mount_devise_token_auth_for 'User', at: 'auth'
   root :to => 'orders#index'
