@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 
   get '/newsletter', to: 'newsletter#get'
 
+  post '/contact-us', to: 'contactus#forward'
+
 
   mount_devise_token_auth_for 'User', at: 'auth'
   root :to => 'orders#index'

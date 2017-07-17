@@ -115,6 +115,7 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
+    mustermann (1.0.0)
     nio4r (2.1.0)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
@@ -153,6 +154,8 @@ GEM
     puma (3.9.1)
     rack (2.0.3)
     rack-cors (0.4.1)
+    rack-protection (2.0.0)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.2)
@@ -186,6 +189,7 @@ GEM
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
     ruby_dep (1.5.0)
+    ruby_http_client (3.1.0)
     rubyzip (1.2.1)
     sass (3.4.24)
     sass-rails (5.0.6)
@@ -199,6 +203,9 @@ GEM
       rubyzip (~> 1.0)
     sendgrid (1.2.4)
       json
+    sendgrid-ruby (5.0.0)
+      ruby_http_client (~> 3.0)
+      sinatra (>= 1.4.7, < 3)
     shopify_api (4.9.0)
       activeresource (>= 3.0.0)
       rack
@@ -206,6 +213,11 @@ GEM
       omniauth-shopify-oauth2 (~> 1.1.11)
       rails (>= 5.0.0)
       shopify_api (>= 4.3.2)
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.0)
+      tilt (~> 2.0)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -262,6 +274,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   selenium-webdriver
   sendgrid
+  sendgrid-ruby
   shopify_api
   shopify_app
   spring
