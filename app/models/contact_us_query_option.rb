@@ -1,0 +1,2 @@
+class ContactUsQueryOption < ApplicationRecord
+end

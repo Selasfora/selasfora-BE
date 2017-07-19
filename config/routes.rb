@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
   post '/contact-us', to: 'contactus#forward'
 
+  get '/contact-us/query-options', to: 'contactus#get_options'
+
 
   mount_devise_token_auth_for 'User', at: 'auth'
   root :to => 'orders#index'

@@ -59,4 +59,9 @@ class ContactusController < ApplicationController
   def json_response(object, status = :ok)
     render json: object, status: status
   end
+
+  def get_options
+    @options = ContactUsQueryOption.all()
+    json_response(@options)
+  end
 end
