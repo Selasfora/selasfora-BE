@@ -5,8 +5,13 @@ class NewsletterController < ApplicationController
   end
 
   def get
-    @news = Newsletter.all()
-    json_response(@news)
+    active_emails = Newsletter.where(:is_active => true )
+    non_active_emails = Newsletter.where(:is_active => false )
+    emails = {
+        "active" => active_emails,
+        "passive" => non_active_emails
+    }
+    json_response(emails)
   end
 
   def newsletter_params
