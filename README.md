@@ -1,24 +1,61 @@
-# README
+# Selasfora Backend API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This contain logic for selasfora api, connecting mainly with shopify api
 
-Things you may want to cover:
+## Getting Started
 
-* Ruby version
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-* System dependencies
+### Prerequisites
 
-* Configuration
+What things you need to install the software and how to install them
 
-* Database creation
+```
+Ruby Version > 4.0
+```
 
-* Database initialization
+### Installing
 
-* How to run the test suite
+A step by step series of examples that tell you have to get a development env running
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+bundle install - install all project dependencies 
+```
 
-* Deployment instructions
 
-* ...
+## Running the tests
+
+```
+Not Available now
+```
+
+## Database
+
+```
+- rake db:create (just for the first time)
+- rake db:migrate (To run migrations)
+```
+
+## Start app
+
+```
+- rails server
+```
+
+## Authors
+
+```
+* Oyelade Oladayo (ayfrank2@gmail.com)
+```
+
+## License
+
+This project is licensed under the MIT License
+
+## Acknowledgments
+
+```
+* @Labib
+* @Saurabh
+```
+
