@@ -28,4 +28,24 @@ class ProductsController < ApplicationController
     render json: charm_products
   end
 
+  def get_filters
+    color_filters = ColorFilterOption.all()
+    material_filters = MaterialFilterOption.all()
+    mood_filters = MoodFilterOption.all()
+    price_filters = PriceFilterOption.all()
+
+    filters = {
+        "color" => color_filters,
+        "material" =>  material_filters,
+        "mood" =>  mood_filters,
+        "price" => price_filters
+    }
+
+    json_response(filters)
+  end
+
+  def json_response(object, status = :ok)
+    render json: object, status: status
+  end
+
 end

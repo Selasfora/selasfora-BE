@@ -1,0 +1,2 @@
+class PriceFilterOption < ApplicationRecord
+end

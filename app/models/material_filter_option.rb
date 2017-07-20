@@ -1,0 +1,2 @@
+class MaterialFilterOption < ApplicationRecord
+end

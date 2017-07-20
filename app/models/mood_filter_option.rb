@@ -1,0 +1,2 @@
+class MoodFilterOption < ApplicationRecord
+end

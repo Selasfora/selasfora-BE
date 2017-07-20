@@ -1,0 +1,2 @@
+class ColorFilterOption < ApplicationRecord
+end
