@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   get '/products/filters', to: 'products#get_filters'
 
+  get '/products/search', to: 'products#filter'
+
   get '/product/:id', to: 'products#getSingleProduct'
 
   get '/products/charm', to: 'products#getAllCharmProducts'
