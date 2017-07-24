@@ -67,10 +67,10 @@ class ProductsController < ApplicationController
 
     products.each do |product|
         product["variants"].each do |variant|
-            if(variant["price"].to_f <= filters[:max_price].to_f && 
-                variant["price"].to_f >= filters[:min_price].to_f &&
-                filters[:material].include?(variant["material"]) &&
-                filters[:mood].include?(variant["mood"]) &&
+            if(variant["price"].to_f <= filters[:max_price].to_f ||
+                variant["price"].to_f >= filters[:min_price].to_f ||
+                filters[:material].include?(variant["material"]) ||
+                filters[:mood].include?(variant["mood"]) ||
                 filters[:color].include?(variant["color"])
             )
                 final_products.push(product)
