@@ -52,8 +52,8 @@ class ProductsController < ApplicationController
     filters[:color] = params[:color] ? params[:color].split(',') : []
     filters[:material] = params[:material] ? params[:material].split(',') : []
     filters[:mood] = params[:mood] ? params[:mood].split(',') : []
-    filters[:max_price] = params[:max_price] ? params[:max_price] : ""
-    filters[:min_price] = params[:min_price] ? params[:min_price] : ""
+    filters[:max_price] = params[:max_price] ? params[:max_price] : -1
+    filters[:min_price] = params[:min_price] ? params[:min_price] : 100000000000000
 
 
 
@@ -69,11 +69,13 @@ class ProductsController < ApplicationController
         product["variants"].each do |variant|
             if(variant["price"].to_f <= filters[:max_price].to_f ||
                 variant["price"].to_f >= filters[:min_price].to_f ||
-                filters[:material].include?(variant["material"]) ||
-                filters[:mood].include?(variant["mood"]) ||
-                filters[:color].include?(variant["color"])
-            )
+                filters[:material].include?(variant["option3"]) ||
+                filters[:mood].include?(variant["option1"]) ||
+                filters[:color].include?(variant["option2"])
+            )   
                 final_products.push(product)
+                breaks = true
+                break if breaks
             end
         end
     end
