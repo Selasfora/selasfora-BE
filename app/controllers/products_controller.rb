@@ -49,11 +49,15 @@ class ProductsController < ApplicationController
     page_num = params[:page] || 1
 
     filters = {}
-    filters[:color] = params[:color] || ""
-    filters[:material] = params[:material] || ""
-    filters[:mood] = params[:mood] || ""
-    filters[:max_price] = params[:max_price] || ""
-    filters[:min_price] = params[:min_price] || ""
+    filters[:color] = params[:color] ? params[:color].split(',') : []
+    filters[:material] = params[:material] ? params[:material].split(',') : []
+    filters[:mood] = params[:mood] ? params[:mood].split(',') : []
+    filters[:max_price] = params[:max_price] ? params[:max_price] : ""
+    filters[:min_price] = params[:min_price] ? params[:min_price] : ""
+
+
+
+    puts filters
 
     all_products = ShopifyAPI::Session.temp(ENV['SHOPIFY_API_URL'], ENV['SHOPIFY_API_KEY']) { ShopifyAPI::Product.find(:all, :params => {:limit => page_limit}) }
     products_str = all_products.to_json
@@ -65,9 +69,9 @@ class ProductsController < ApplicationController
         product["variants"].each do |variant|
             if(variant["price"].to_f <= filters[:max_price].to_f && 
                 variant["price"].to_f >= filters[:min_price].to_f &&
-                variant["material"] == filters[:material] &&
-                variant["mood"] == filters[:mood] &&
-                variant["color"] == filters[:color]
+                filters[:material].include?(variant["material"]) &&
+                filters[:mood].include?(variant["mood"]) &&
+                filters[:color].include?(variant["color"])
             )
                 final_products.push(product)
             end
