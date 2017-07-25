@@ -47,6 +47,7 @@ class ProductsController < ApplicationController
   def filter
     page_limit = params[:limit] || 50
     page_num = params[:page] || 1
+    product_type_name = params[:product_type] ? params[:product_type] : "charm"
 
     filters = {}
     filters[:color] = params[:color] ? params[:color].split(',') : []
@@ -59,7 +60,7 @@ class ProductsController < ApplicationController
 
     puts filters
 
-    all_products = ShopifyAPI::Session.temp(ENV['SHOPIFY_API_URL'], ENV['SHOPIFY_API_KEY']) { ShopifyAPI::Product.find(:all, :params => {:limit => page_limit}) }
+    all_products = ShopifyAPI::Session.temp(ENV['SHOPIFY_API_URL'], ENV['SHOPIFY_API_KEY']) { ShopifyAPI::Product.find(:all, :params => {:limit => page_limit, :product_type => product_type_name}) }
     products_str = all_products.to_json
     products = YAML.load(products_str)
     
