@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
   get '/articles', to: 'blogs#getAllArticles'
 
+  get '/articles/:id', to: 'blogs#getSingleArticle'
+
   get '/pages', to: 'pages#getAllPages'
 
   get '/pages/:handle', to: 'pages#getSpecifyPage'

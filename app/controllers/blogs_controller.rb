@@ -25,4 +25,10 @@ class BlogsController < ApplicationController
     articles = ShopifyAPI::Session.temp(ENV['SHOPIFY_API_URL'], ENV['SHOPIFY_API_KEY']) { ShopifyAPI::Article.find(:all, :params => { :blog_id => id }) }
     render json: articles
   end
+
+  def getSingleArticle
+    article_id = params[:id]
+    article = ShopifyAPI::Session.temp(ENV['SHOPIFY_API_URL'], ENV['SHOPIFY_API_KEY']) { ShopifyAPI::Article.find(article_id) }
+    render json: article
+  end
 end
