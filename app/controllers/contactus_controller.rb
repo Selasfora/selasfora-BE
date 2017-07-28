@@ -25,7 +25,7 @@ class ContactusController < ApplicationController
       ]
     }'
 
-    to = params[:to]
+    to = ENV['CONTACT_US_EMAIL']
     from = params[:from]
     subject = params[:subject] || "No subject"
     message = params[:message]
