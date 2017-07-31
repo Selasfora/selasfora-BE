@@ -1,0 +1,2 @@
+class SortByOption < ApplicationRecord
+end
