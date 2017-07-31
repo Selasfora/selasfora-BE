@@ -33,12 +33,14 @@ class ProductsController < ApplicationController
     material_filters = MaterialFilterOption.all()
     mood_filters = MoodFilterOption.all()
     price_filters = PriceFilterOption.all()
+    sort_by_options = SortByOption.all()
 
     filters = {
         "color" => color_filters,
         "material" =>  material_filters,
         "mood" =>  mood_filters,
-        "price" => price_filters
+        "price" => price_filters,
+        "sort_by" => sort_by_options
     }
 
     json_response(filters)
