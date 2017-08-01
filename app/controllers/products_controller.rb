@@ -58,6 +58,7 @@ class ProductsController < ApplicationController
     filters[:max_price] = params[:max_price] ? params[:max_price] : -1
     filters[:min_price] = params[:min_price] ? params[:min_price] : 100000000000000
 
+    sort_by_paramter = params[:sort_by] ? params[:sort_by] : nil
 
 
     puts filters
@@ -69,7 +70,15 @@ class ProductsController < ApplicationController
     final_products = []
 
     products.each do |product|
+        average_price = 0
         product["variants"].each do |variant|
+
+            if(variant["price"].to_f >= average_price)
+                average_price = variant["price"].to_f
+            end
+
+            product["average_price"] = average_price
+
             if((variant["price"].to_f <= filters[:max_price].to_f &&
                 variant["price"].to_f >= filters[:min_price].to_f) ||
                 filters[:material].include?(variant["option3"]) ||
@@ -81,6 +90,20 @@ class ProductsController < ApplicationController
                 break if breaks
             end
         end
+    end
+
+    if(sort_by_paramter) 
+        if(sort_by_paramter == "Newest")
+            final_products = final_products.sort {|a,b| a[:created_at] <=> b[:created_at]}
+            final_products = final_products.reverse
+        elsif(sort_by_paramter == "Highest Price")
+            final_products = final_products.sort {|a,b| a[:average_price] <=> b[:average_price]}
+        elsif(sort_by_paramter == "Lowest Price")
+            final_products = final_products.sort {|a,b| a[:average_price] <=> b[:average_price]}
+            final_products = final_products.reverse
+        end
+    else
+        final_products = final_products
     end
 
     render json: final_products
