@@ -69,27 +69,30 @@ class ProductsController < ApplicationController
     
     final_products = []
 
-    products.each do |product|
+    if(params[:color] || params[:material] || params[:mood] || params[:max_price] || params[:min_price])
+      products.each do |product|
         average_price = 0
         product["variants"].each do |variant|
+          if(variant["price"].to_f >= average_price)
+            average_price = variant["price"].to_f
+          end
 
-            if(variant["price"].to_f >= average_price)
-                average_price = variant["price"].to_f
-            end
+          product["average_price"] = average_price
 
-            product["average_price"] = average_price
-
-            if((variant["price"].to_f <= filters[:max_price].to_f &&
-                variant["price"].to_f >= filters[:min_price].to_f) ||
-                filters[:material].include?(variant["option3"]) ||
-                filters[:mood].include?(variant["option1"]) ||
-                filters[:color].include?(variant["option2"])
-            )   
-                final_products.push(product)
-                breaks = true
-                break if breaks
-            end
+          if((variant["price"].to_f <= filters[:max_price].to_f &&
+            variant["price"].to_f >= filters[:min_price].to_f) ||
+            filters[:material].include?(variant["option3"]) ||
+            filters[:mood].include?(variant["option1"]) ||
+            filters[:color].include?(variant["option2"])
+          )   
+            final_products.push(product)
+            breaks = true
+            break if breaks
+          end
         end
+      end
+    else
+        final_products = products
     end
 
     if(sort_by_paramter) 
