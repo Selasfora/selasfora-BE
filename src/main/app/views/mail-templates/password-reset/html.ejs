@@ -1,0 +1,11 @@
+<% include ../_header %>
+	<div class="body">
+		<p>Hi <%= user.name %>,</p>
+		<p>Seems like you forgot your password, don’t worry, it happens to the best of us!</p>
+		<p>Click on the button below to reset your password.</p>
+		<div class="btn">
+			<a href="<%= forgotPasswordURL %>" class="a"><strong>RESET PASSWORD</strong></a>
+		</div>
+		<p>Cheers!<br>Team ChefStalk</p>
+	</div>
+<% include ../_footer %>
