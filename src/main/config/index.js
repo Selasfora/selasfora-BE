@@ -21,17 +21,17 @@ const config = {
     cache: [{
       engine: CatboxRedis,
       name: 'redis-cache',
-      host: process.env.REDIS_HOST || 'localhost',
-      port: process.env.REDIS_PORT || 6379,
-      password: process.env.REDIS_PASS || false,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      password: process.env.REDIS_PASS,
       partition: 'cache'
     }]
   },
   // NewRelic Config
   newrelic: {
     name: `Selasfora v1.0 Server -  ${env}`,
-    key: process.env.NEW_RELIC_LICENSE_KEY || 'disabled',
-    log_level: process.env.NEW_RELIC_LOG_LEVEL || 'info'
+    key: process.env.NEW_RELIC_LICENSE_KEY,
+    log_level: process.env.NEW_RELIC_LOG_LEVEL
   },
   // Database, currently we have postgres only,
   // mongo will be added later and redis is used for cache.
@@ -41,11 +41,12 @@ const config = {
       debug: true,
       recreateDatabase: (env !== 'production') ? (process.env.DB_RECREATE || 'false') : 'false',
       connection: {
-        host: process.env.DB_HOST || 'localhost',
-        port: process.env.DB_PORT || 5432,
-        user: process.env.DB_USER || 'manjunathan',
-        password: process.env.DB_PASS || 'password',
-        database: process.env.DB_NAME || 'selasfora_dev',
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_NAME,
+        // ssl: true,
         charset: 'utf8'
       },
       pool: {
@@ -66,9 +67,9 @@ const config = {
     },
     redis: {
       name: 'selasfora-cache',
-      host: process.env.REDIS_HOST || 'localhost',
-      port: process.env.REDIS_PORT || 6379,
-      password: process.env.REDIS_PASS || false
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+      password: process.env.REDIS_PASS
     }
   },
   // Forgot password configureation
@@ -94,28 +95,33 @@ const config = {
     urlKey: false,
     cookieKey: false
   },
-  // social Credentils
+  // social Credentials
   social: {
     facebook: {
-      clientID: process.env.FACEBOOK_CLIENT_ID || '635916939929504',
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '3894fb51915debb96a3309a3bc164831',
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       profileUrl: 'https://graph.facebook.com/me'
     },
     google: {
-      clientID: process.env.GOOGLE_CLIENT_ID || '128848880503-d78qq6ut9hkrdci543c43ka1ehr3vph4.apps.googleusercontent.com',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'pT1LZuRvVVI0hVCOrizdaCU1',
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       profileUrl: 'https://www.googleapis.com/plus/v1/people/me'
     }
   },
   mailer: {
-    transport: 'ses',
-    // SES credentials
-    ses: {
-      package: 'nodemailer-ses-transport',
-      accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID || 'AKIAIU536CCJVDN3TWMA',
-      secretAccessKey: process.env.AWS_SES_SECRET_ACCESS_KEY || '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',
-      region: process.env.AWS_SES_REGION || 'us-west-2'
+    transport: 'sendgrid',
+    // Sendgrid credentials
+    sendgrid: {
+      package: 'nodemailer-sendgrid-transport',
+      auth: {
+        api_key: process.env.SENDGRID_API_KEY
+      }
     }
+  },
+  shopify: {
+    shopName: process.env.SHOPIFY_SHOP_NAME,
+    apiKey: process.env.SHOPIFY_API_KEY,
+    password: process.env.SHOPIFY_PASSWORD
   }
 };
 

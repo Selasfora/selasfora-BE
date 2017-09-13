@@ -8,8 +8,8 @@ const plugin = {
     options: {
       basePath: '/api/',
       info: {
-        title: 'Selasfora v4.0 REST API Docs',
-        description: '',
+        title: 'Selasfora v1.0 REST API Docs',
+        description: 'Selasfora v1.0 REST API Docs',
         version: '1.0.0'
       },
       securityDefinitions: {

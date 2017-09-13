@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import Checkit from 'checkit';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import knexClass from 'knex';
@@ -12,8 +13,8 @@ const dbConfig = Config.get('database').get('postgres').toJS();
 const knex = knexClass(dbConfig);
 Model.knex(knex);
 
-const defaultSortField = 'updatedAt';
-const defaultSortOrder = 'desc';
+const defaultSortField = 'id';
+const defaultSortOrder = 'asc';
 
 const setMiscAttributes = (queryBuilder, criteria = {}) => {
   if (criteria.offset) {
@@ -56,12 +57,19 @@ export default class BaseModel extends Model {
   }
 
   /**
+  Place holder for all the validation rules applied at model level.
+  */
+  validations() {
+    return {};
+  }
+
+  /**
   // https://github.com/Vincit/objection.js/issues/113
   pre-create hooks defined by Objection.js
   */
   // eslint-disable-next-line no-unused-vars
   $beforeInsert(opt, queryContext) {
-    this.createdAt = this.updatedAt = new Date().toISOString();
+    this.created_at = this.updated_at = new Date().toISOString();
     this.presaveHook();
     return this.$validateHook();
   }
@@ -116,6 +124,13 @@ export default class BaseModel extends Model {
   */
   presaveHook() {
     // DO NOTHING..
+  }
+
+  /**
+  placeholder hook for running validations rules.
+  */
+  $validateHook() {
+    return new Checkit(this.validations()).run(this);
   }
 
   static async createOrUpdate(model, fetchById = true) {

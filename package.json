@@ -36,6 +36,7 @@
     "bluebird": "^3.4.7",
     "boom": "^4.2.0",
     "catbox-redis": "^2.0.2",
+    "checkit": "^0.7.0",
     "dataobject-parser": "^1.1.3",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.5",

@@ -28,7 +28,7 @@ export default class Social {
   getProfileDataFromFacebookProfile(profile) {
     return {
       ...profile,
-      fullName: profile.name,
+      first_name: profile.name,
       avatarURL: `https://graph.facebook.com/${profile.id}/picture?type=large`
     };
   }
@@ -37,7 +37,7 @@ export default class Social {
     return {
       ...profile,
       email: profile.emails[0].value,
-      fullName: profile.displayName,
+      first_name: profile.displayName,
       userName: profile.displayName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase(),
       avatarURL: _.get(profile, 'image.url')
     };
@@ -61,13 +61,15 @@ export default class Social {
       profileData = this.getProfileDataFromGoogleProfile(profile);
     } else if (this.provider === 'facebook') {
       profileData = this.getProfileDataFromFacebookProfile(profile);
+    } else if (this.provider === 'twitter') {
+      // profileData = this.getProfileDataFromTwitterProfile(profile);
     }
 
     Logger.info('social profileData', profileData);
     // NOTE: In case we don't find the email, fake it.
     const email = profileData.email;
     if (!email) {
-      const testEmail = profileData.fullName.replace(/[^a-zA-Z0-9]/g, '');
+      const testEmail = profileData.first_name.replace(/[^a-zA-Z0-9]/g, '');
       const random = Math.floor(Math.random() * 90000) + 10000;
       Object.assign(profileData, {
         email: `${testEmail}${random}@selasfora.com`

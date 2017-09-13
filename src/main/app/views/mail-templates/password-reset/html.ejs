@@ -1,11 +1,10 @@
 <% include ../_header %>
 	<div class="body">
-		<p>Hi <%= user.name %>,</p>
-		<p>Seems like you forgot your password, don’t worry, it happens to the best of us!</p>
-		<p>Click on the button below to reset your password.</p>
-		<div class="btn">
-			<a href="<%= forgotPasswordURL %>" class="a"><strong>RESET PASSWORD</strong></a>
-		</div>
-		<p>Cheers!<br>Team ChefStalk</p>
+		<p>Hi <%= user.first_name %>,</p>
+		<p>Someone has requested a link to change your password. You can do this through the link below.</p>
+		<p><a href="<%= forgotPasswordURL %>" class="a"><strong>Change my password</strong></a></p>
+		<p>If you didn't request this, please ignore this email.</p>
+		<p>Your password won't change until you access the link above and create a new one.</p>
+		<p>Cheers!<br>Team Selasfora</p>
 	</div>
 <% include ../_footer %>

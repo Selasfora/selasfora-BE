@@ -6,6 +6,7 @@ module.exports = {
     "import"
   ],
   "rules": {
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "camelcase": 0
   }
 };

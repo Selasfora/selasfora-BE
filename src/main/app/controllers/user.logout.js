@@ -18,10 +18,6 @@ const options = {
   description: 'Logout User - Access - admin,user',
   tags: ['api'],
   validate: {
-    options: {
-      allowUnknown: true,
-      stripUnknown: true
-    },
     params: {
       userId: validator.userId.required()
     }
@@ -78,6 +74,6 @@ const handler = (server) => {
 };
 
 module.exports = {
-  enabled: false,
+  enabled: true,
   operation: handler
 };

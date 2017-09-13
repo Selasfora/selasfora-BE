@@ -14,7 +14,7 @@ const options = {
     payload: {
       email: validator.email.required(),
       password: validator.password.required(),
-      resetPasswordToken: validator.resetPasswordToken.required()
+      reset_password_token: validator.reset_password_token.required()
     }
   },
   plugins: {
@@ -26,23 +26,22 @@ const options = {
     request.log(['info', __filename], `payload:: ${inspect(request.payload)}`);
 
     // Fetch user with provided email
-    const user = await UserModel.findOne(
-      UserModel.buildCriteria('email', request.payload.email)
-    );
+    const user = await UserModel.findOne(UserModel.buildCriteria('email', request.payload.email));
+
     if (!user) {
       return reply(Boom.notFound('User Not Found'));
     }
     request.log(['info', __filename], `user found - ${inspect(user)}`);
 
     // Validate token
-    if (request.payload.resetPasswordToken !== user.resetPasswordToken) {
+    if (request.payload.reset_password_token !== user.reset_password_token) {
       return reply(Boom.badRequest('Invalid Token'));
     }
 
     // Reset token and create hash from password
-    user.resetPasswordSentAt = null;
-    user.resetPasswordToken = null;
-    user.encryptedPassword = request.payload.password;
+    user.reset_password_sent_at = null;
+    user.reset_password_token = null;
+    user.encrypted_password = request.payload.password;
     const updatedUser = await UserModel.createOrUpdate(user);
 
     request.log(['info', __filename], `updated response - ${inspect(updatedUser)}`);

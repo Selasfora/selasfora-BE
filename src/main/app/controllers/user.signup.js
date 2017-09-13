@@ -15,16 +15,13 @@ const options = {
   description: 'Create User - Access - ALL',
   tags: ['api'],
   validate: {
-    options: {
-      allowUnknown: true,
-      stripUnknown: true
-    },
     payload: {
-      userName: validator.userName.required(),
-      fullName: validator.fullName.required(),
-      password: validator.password.required(),
       email: validator.email.required(),
-      type: validator.type.default('chef').optional()
+      password: validator.password.required(),
+      password_confirmation: validator.password.required(),
+      phone: validator.phone.optional(),
+      first_name: validator.first_name.required(),
+      last_name: validator.last_name.required()
     }
   },
   plugins: {
@@ -34,34 +31,39 @@ const options = {
   },
   handler: async(request, reply) => {
     try {
-      const userCount = await UserModel.findByUserNameOrEmail(
-        request.payload.email, request.payload.userName);
+      if (request.payload.password !== request.payload.password_confirmation) {
+        return reply(Boom.notFound('Password confirmation doesn\'t match Password'));
+      }
+
+      const user = await UserModel.findOne(UserModel.buildCriteria('email', request.payload.email));
 
       // Error out if email already exists.
-      if (_.size(userCount) > 0) {
-        return reply(Boom.notFound('The email/username already taken'));
+      if (!user) {
+        return reply(Boom.notFound('Email has already been taken'));
       }
 
       const userObject = _.clone(request.payload);
-      userObject.encryptedPassword = request.payload.password;
+      userObject.encrypted_password = request.payload.password;
       delete userObject.password;
-      userObject.emailToken = Math.floor(100000 + (Math.random() * 900000));
+      userObject.confirmation_token = Math.floor(100000 + (Math.random() * 900000));
+      userObject.confirmation_sent_at = new Date();
       const result = await UserModel.createOrUpdate(userObject);
+
+      // TODO: Link the Account to Shopify and store back the shopify_customer_id.
 
       // on successful, create login_token for this user.
       const sessionId = Uuid.v4();
       const session = await request.server.asyncMethods.sessionsAdd(sessionId, {
         id: sessionId,
-        userId: result.id,
-        type: result.type
+        userId: result.id
       });
 
       await RedisClient.saveSession(result.id, sessionId, session);
       // sign the token
-      result.sessionToken = request.server.methods.sessionsSign(session);
+      result.session_token = request.server.methods.sessionsSign(session);
 
       // Construct web app url for email verification
-      const verificationUrl = `${Config.get('emailVerification').get('verificationUrl')}?email=${result.email}&verificationCode=${result.emailToken}`;
+      const verificationUrl = `${Config.get('emailVerification').get('verificationUrl')}?email=${result.email}&verificationCode=${result.confirmation_token}`;
 
       await Mailer.dispatchMail('welcome-email', 'admin@selasfora.com', result.email, {
         user: result,

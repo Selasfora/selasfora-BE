@@ -15,19 +15,19 @@ const validator = UserModel.validatorRules();
 async function handler(providerName, request, reply) {
   request.log(['info', `${providerName}.signup`], `payload:: ${inspect(request.payload)}`);
 
-  const accessToken = request.payload.accessToken;
-  const refreshToken = request.payload.refreshToken || accessToken;
+  const access_token = request.payload.access_token;
+  const refresh_token = request.payload.refresh_token || access_token;
 
   const provider = new Social(providerName);
   let profile;
   try {
-    profile = await provider.getProfile(accessToken);
+    profile = await provider.getProfile(access_token);
   } catch (e) {
     request.log(['error', `${providerName}.signup`], `fetch profile${e.stack}`);
     return reply(Boom.badRequest('Invalid social credentials'));
   }
 
-  request.log(['info', `${providerName}.signup`], ` prfile response:  ${inspect(profile)}`);
+  request.log(['info', `${providerName}.signup`], ` profile response:  ${inspect(profile)}`);
 
   const socialLogin = await SocialLoginModel.findOne([
     SocialLoginModel.buildCriteria('provider', providerName),
@@ -40,28 +40,18 @@ async function handler(providerName, request, reply) {
   if (profile && socialLogin) {
     const user = await UserModel.findOne(
       UserModel.buildCriteria('id', socialLogin.userId), {
-        columns: '*,socialLogins.*'
+        columns: '*,social_logins.*'
       }
     );
-
-    // Error out if the user type doesnt match
-    if (user.type !== request.payload.type) {
-      return reply(Boom.unauthorized('Invalid credentials.'));
-    }
-
-    if (user.isBlocked === true) {
-      return reply(Boom.unauthorized('Blocked User.'));
-    }
 
     request.log(['info', `${providerName}.signup`], `user found - ${inspect(user)}`);
     const sessionId = Uuid.v4();
     const session = await request.server.asyncMethods.sessionsAdd(sessionId, {
       id: sessionId,
-      userId: user.id,
-      type: user.type
+      userId: user.id
     });
     await RedisClient.saveSession(user.id, sessionId, session);
-    user.sessionToken = request.server.methods.sessionsSign(session);
+    user.session_token = request.server.methods.sessionsSign(session);
 
     return reply(user);
   }
@@ -75,11 +65,10 @@ async function handler(providerName, request, reply) {
   }
 
   const userObject = {
-    userName: profile.userName || Uuid.v4(),
-    fullName: profile.fullName,
+    first_name: profile.first_name || Uuid.v4(),
+    last_name: profile.last_name,
     email: profile.email,
-    encryptedPassword: Uuid.v4(),
-    type: request.payload.type
+    encrypted_password: Uuid.v4()
   };
   let user;
   try {
@@ -88,10 +77,10 @@ async function handler(providerName, request, reply) {
     const socialObject = {
       userId: user.id,
       provider: providerName,
-      providerId: profile.id,
-      accessToken,
-      refreshToken,
-      isPrimaryLogin: true
+      provider_id: profile.id,
+      access_token,
+      refresh_token,
+      is_primary_login: true
     };
 
     await SocialLoginModel.createOrUpdate(socialObject);
@@ -110,8 +99,7 @@ async function handler(providerName, request, reply) {
   const sessionId = Uuid.v4();
   const session = await request.server.asyncMethods.sessionsAdd(sessionId, {
     id: sessionId,
-    userId: user.id,
-    type: user.type
+    userId: user.id
   });
   await RedisClient.saveSession(user.id, sessionId, session);
 
@@ -119,7 +107,7 @@ async function handler(providerName, request, reply) {
   //   user
   // });
 
-  user.sessionToken = request.server.methods.sessionsSign(session);
+  user.session_token = request.server.methods.sessionsSign(session);
   return reply(user).code(201);
 }
 
@@ -130,9 +118,8 @@ export default function socialSignUp(providerName) {
     tags: ['api'],
     validate: {
       payload: {
-        accessToken: validator.accessToken.required(),
-        refreshToken: validator.refreshToken.optional(),
-        type: validator.type.default('chef').optional()
+        access_token: validator.access_token.required(),
+        refresh_token: validator.refresh_token.optional()
       }
     },
     plugins: {

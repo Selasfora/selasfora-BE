@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this,newline-per-chained-call */
 import Bcrypt from 'bcrypt';
 import Logger from 'winston';
-import _ from 'lodash';
 import Joi from 'joi';
 import BaseModel from './base';
 
@@ -11,7 +10,7 @@ export default class User extends BaseModel {
   }
 
   static entityFilteringScope() {
-    const filteredFields = ['encryptedPassword', 'passwordSalt', 'resetPasswordToken', 'resetPasswordSentAt', 'emailToken', 'isBlocked'];
+    const filteredFields = ['encrypted_password', 'password_salt', 'confirmation_token', 'confirmed_at', 'confirmation_sent_at', 'reset_password_token', 'reset_password_sent_at', 'social_logins'];
     return {
       admin: filteredFields,
       user: filteredFields,
@@ -25,15 +24,13 @@ export default class User extends BaseModel {
       email: Joi.string().trim().lowercase().email({
         minDomainAtoms: 2
       }).description('Email'),
-      fullName: Joi.string().trim().min(3).max(255).description('Full Name'),
-      userName: Joi.string().trim().lowercase().description('User Name'),
+      first_name: Joi.string().trim().min(1).max(255).description('First Name'),
+      last_name: Joi.string().trim().min(1).max(255).description('Last Name'),
       password: Joi.string().trim().alphanum().min(1).max(30).description('Password'),
-      type: Joi.string().trim().lowercase().default('chef')
-        .valid(['chef', 'restaurant']).description('User Type'),
-      accessToken: Joi.string().trim().description('Access token'),
-      refreshToken: Joi.string().trim().description('Refresh token'),
-      phoneNumber: Joi.string().trim().allow('', null).description('Phone Number'),
-      resetPasswordToken: Joi.string().trim().description('Reset password token')
+      access_token: Joi.string().trim().description('Access token'),
+      refresh_token: Joi.string().trim().description('Refresh token'),
+      phone: Joi.string().trim().allow('', null).description('Phone Number'),
+      reset_password_token: Joi.string().trim().description('Reset password token')
     };
     return rules;
   }
@@ -42,29 +39,29 @@ export default class User extends BaseModel {
     this.hashPassword();
   }
 
-  static async findByUserNameOrEmail(email, userName) {
-    const records = this.query()
-      .where('email', _.toLower(email || userName))
-      .orWhere('userName', _.toLower(userName || email));
+  // static async findByUserNameOrEmail(email, userName) {
+  //   const records = this.query()
+  //     .where('email', _.toLower(email || userName))
+  //     .orWhere('userName', _.toLower(userName || email));
 
-    return await records;
-  }
+  //   return await records;
+  // }
 
-  static async findByTypeAndNameOrId(type, name, id) {
-    const records = this.query()
-      .where({
-        type
-      })
-      .andWhere((builder) => {
-        builder.where('id', id).orWhere('userName', _.toLower(name));
-      });
+  // static async findByTypeAndNameOrId(type, name, id) {
+  //   const records = this.query()
+  //     .where({
+  //       type
+  //     })
+  //     .andWhere((builder) => {
+  //       builder.where('id', id).orWhere('userName', _.toLower(name));
+  //     });
 
-    return await records;
-  }
+  //   return await records;
+  // }
 
   static get relationMappings() {
     return {
-      socialLogins: {
+      social_logins: {
         relation: BaseModel.HasManyRelation,
         modelClass: `${__dirname}/socialLogin`,
         join: {
@@ -76,23 +73,23 @@ export default class User extends BaseModel {
   }
 
   hashPassword() {
-    if (this.encryptedPassword) {
-      if (this.encryptedPassword.indexOf('$2a$') === 0 && this.encryptedPassword.length === 60) {
+    if (this.encrypted_password) {
+      if (this.encrypted_password.indexOf('$2a$') === 0 && this.encrypted_password.length === 60) {
         // The password is already hashed. It can be the case when the instance is loaded from DB
-        this.encryptedPassword = this.encryptedPassword;
+        this.encrypted_password = this.encrypted_password;
       } else {
-        this.passwordSalt = Bcrypt.genSaltSync(10);
-        this.encryptedPassword = this.encryptPassword(this.encryptedPassword, this.passwordSalt);
+        this.password_salt = Bcrypt.genSaltSync(10);
+        this.encrypted_password = this.encryptPassword(this.encrypted_password, this.password_salt);
       }
     }
     Logger.info('after hashPassword');
   }
 
   verifyPassword(password) {
-    return this.encryptPassword(password, this.passwordSalt) === this.encryptedPassword;
+    return this.encryptPassword(password, this.password_salt) === this.encrypted_password;
   }
 
-  encryptPassword(pwd, passwordSalt) {
-    return Bcrypt.hashSync(pwd, passwordSalt);
+  encryptPassword(pwd, password_salt) {
+    return Bcrypt.hashSync(pwd, password_salt);
   }
 }

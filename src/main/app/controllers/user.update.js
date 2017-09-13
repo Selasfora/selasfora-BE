@@ -22,11 +22,11 @@ const options = {
       userId: validator.userId.required()
     },
     payload: {
-      fullName: validator.fullName.optional(),
-      phoneNumber: validator.phoneNumber.optional(),
-      // type: validator.type.default('chef').optional(),
-      oldPassword: validator.password.optional(),
-      newPassword: validator.password.optional()
+      first_name: validator.first_name.optional(),
+      last_name: validator.last_name.optional(),
+      phone: validator.phone.optional(),
+      old_password: validator.password.optional(),
+      new_password: validator.password.optional()
     }
   },
   plugins: {
@@ -44,15 +44,14 @@ const options = {
       payload.id = request.params.userId;
 
       // Update password.
-      if (payload.oldPassword) {
-        const user = await UserModel.findOne(
-          UserModel.buildCriteria('id', payload.id));
+      if (payload.old_password) {
+        const user = await UserModel.findOne(UserModel.buildCriteria('id', payload.id));
 
-        if (user.verifyPassword(payload.oldPassword)) {
-          if (payload.newPassword) {
-            payload.encryptedPassword = payload.newPassword;
-            delete payload.oldPassword;
-            delete payload.newPassword;
+        if (user.verifyPassword(payload.old_password)) {
+          if (payload.new_password) {
+            payload.encrypted_password = payload.new_password;
+            delete payload.old_password;
+            delete payload.new_password;
             // TODO: Send back Fresh tokens for login. Ideally we should log out this guy.
           } else {
             return reply(Boom.unauthorized('Invalid credentials.'));

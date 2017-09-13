@@ -57,14 +57,18 @@ const options = {
       user
     };
 
-    await Mailer.dispatchMail('password-reset', 'admin@chefstalk.com', user.email, mailVariables);
+    await Mailer.dispatchMail('password-reset', 'admin@selasfora.com', user.email, mailVariables);
 
     // Update table with tokenId and time
-    user.resetPasswordSentAt = new Date();
-    user.resetPasswordToken = tokenId;
+    user.reset_password_sent_at = new Date();
+    user.reset_password_token = tokenId;
     const updatedUser = await UserModel.createOrUpdate(user);
     request.log(['info', __filename], `updated response - ${inspect(updatedUser)}`);
-    return reply(Constants.SUCCESS_RESPONSE);
+
+    return reply({
+      success: true,
+      message: `An email has been sent to ${request.query.email} containing instructions for resetting your password.`
+    });
   }
 };
 
