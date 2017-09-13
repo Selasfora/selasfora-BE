@@ -1,2 +1,0 @@
-class MaterialFilterOption < ApplicationRecord
-end

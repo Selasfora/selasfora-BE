@@ -1,2 +1,0 @@
-class PriceFilterOption < ApplicationRecord
-end
