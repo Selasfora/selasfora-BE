@@ -51,6 +51,7 @@
     "immutable": "^3.8.1",
     "inert": "^4.1.0",
     "joi": "^10.2.0",
+    "joi-date-extensions": "^1.0.2",
     "jsonwebtoken": "^7.2.1",
     "knex": "^0.12.6",
     "lodash": "^4.17.4",

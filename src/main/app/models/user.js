@@ -1,8 +1,11 @@
 /* eslint-disable class-methods-use-this,newline-per-chained-call */
 import Bcrypt from 'bcrypt';
 import Logger from 'winston';
-import Joi from 'joi';
+import BaseJoi from 'joi';
 import BaseModel from './base';
+
+import Extension from 'joi-date-extensions';
+const Joi = BaseJoi.extend(Extension);
 
 export default class User extends BaseModel {
   static get tableName() {
@@ -10,7 +13,7 @@ export default class User extends BaseModel {
   }
 
   static entityFilteringScope() {
-    const filteredFields = ['encrypted_password', 'password_salt', 'confirmation_token', 'confirmed_at', 'confirmation_sent_at', 'reset_password_token', 'reset_password_sent_at', 'social_logins'];
+    const filteredFields = ['dob', 'encrypted_password', 'password_salt', 'confirmation_token', 'confirmed_at', 'confirmation_sent_at', 'reset_password_token', 'reset_password_sent_at', 'social_logins'];
     return {
       admin: filteredFields,
       user: filteredFields,
@@ -30,7 +33,9 @@ export default class User extends BaseModel {
       access_token: Joi.string().trim().description('Access token'),
       refresh_token: Joi.string().trim().description('access_token in case of facebook; refresh_token in case of Google ; token_secret in case of twitter'),
       phone: Joi.number().integer().allow('', null).description('Phone Number'),
-      reset_password_token: Joi.string().trim().description('Reset password token')
+      reset_password_token: Joi.string().trim().description('Reset password token'),
+      gender: Joi.string().trim().allow('', null).valid(['M', 'F', 'U']).default('U').description('Gender'),
+      dob: Joi.date().format('YYYY-MM-DD').description('DOB Format - YYYY-MM-DD')
     };
     return rules;
   }

@@ -22,7 +22,9 @@ const options = {
       password_confirmation: validator.password.required(),
       phone: validator.phone.optional(),
       first_name: validator.first_name.required(),
-      last_name: validator.last_name.required()
+      last_name: validator.last_name.required(),
+      gender: validator.gender.optional(),
+      dob: validator.dob.optional(),
     }
   },
   plugins: {
