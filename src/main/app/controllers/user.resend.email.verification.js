@@ -11,7 +11,7 @@ const options = {
   description: 'Resend Verify Email Token  - Access - ALL',
   tags: ['api'],
   validate: {
-    query: {
+    payload: {
       email: validator.email.required()
     }
   },
@@ -22,7 +22,7 @@ const options = {
   },
   handler: async(request, reply) => {
     // Fetch user with provided email
-    let user = await UserModel.findOne(UserModel.buildCriteria('email', request.query.email));
+    let user = await UserModel.findOne(UserModel.buildCriteria('email', request.payload.email));
     if (!user) {
       return reply(Boom.notFound('User Not Found'));
     }
@@ -45,7 +45,7 @@ const options = {
 
 const handler = () => {
   const details = {
-    method: ['GET'],
+    method: ['POST'],
     path: '/api/users/confirmation',
     config: options
   };
