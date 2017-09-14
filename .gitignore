@@ -64,6 +64,7 @@ test.js
 
 # environment specific variables
 .env
+.env.heroku
 src/main/uploads/*
 src/main/migrations/20161006232830_base_tables.js
 apex-deploy-credentials.csv
