@@ -35,7 +35,7 @@ const options = {
     // Construct web app url for email verification
     const verificationUrl = `${Config.get('emailVerification').get('verificationUrl')}?email=${user.email}&verification_code=${user.confirmation_token}`;
 
-    await Mailer.dispatchMail('verification-email', 'admin@selasfora.com', user.email, {
+    await Mailer.dispatchMail('welcome-email', 'admin@selasfora.com', user.email, {
       user,
       verificationUrl
     });
@@ -46,7 +46,7 @@ const options = {
 const handler = () => {
   const details = {
     method: ['GET'],
-    path: '/api/users/sendConfirmationToken',
+    path: '/api/users/confirmation',
     config: options
   };
   return details;

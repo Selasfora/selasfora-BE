@@ -9,6 +9,7 @@ import RedisClient from './redisClient';
 import Social from './social';
 import errorCodes from './errors';
 import Constants from './constants';
+import Shopify from './shopify';
 
 const validator = UserModel.validatorRules();
 
@@ -21,7 +22,7 @@ async function handler(providerName, request, reply) {
   const provider = new Social(providerName);
   let profile;
   try {
-    profile = await provider.getProfile(access_token);
+    profile = await provider.getProfile(access_token, refresh_token);
   } catch (e) {
     request.log(['error', `${providerName}.signup`], `fetch profile${e.stack}`);
     return reply(Boom.badRequest('Invalid social credentials'));
@@ -31,7 +32,7 @@ async function handler(providerName, request, reply) {
 
   const socialLogin = await SocialLoginModel.findOne([
     SocialLoginModel.buildCriteria('provider', providerName),
-    SocialLoginModel.buildCriteria('providerId', profile.id)
+    SocialLoginModel.buildCriteria('provider_id', profile.id)
   ], {
     columns: '*,user.*'
   });
@@ -39,7 +40,7 @@ async function handler(providerName, request, reply) {
   // Is already registered with social login, error out.
   if (profile && socialLogin) {
     const user = await UserModel.findOne(
-      UserModel.buildCriteria('id', socialLogin.userId), {
+      UserModel.buildCriteria('id', socialLogin.user_id), {
         columns: '*,social_logins.*'
       }
     );
@@ -64,18 +65,25 @@ async function handler(providerName, request, reply) {
     return reply(Boom.forbidden(Util.format(errorCodes.emailDuplicate, profile.email)));
   }
 
+  const customer_details = {
+    email: request.payload.email,
+    first_name: request.payload.first_name
+  };
+  const customer = await Shopify.customer.create(customer_details);
+
   const userObject = {
     first_name: profile.first_name || Uuid.v4(),
     last_name: profile.last_name,
     email: profile.email,
-    encrypted_password: Uuid.v4()
+    encrypted_password: Uuid.v4(),
+    shopify_customer_id: customer.id
   };
   let user;
   try {
     user = await UserModel.createOrUpdate(userObject);
 
     const socialObject = {
-      userId: user.id,
+      user_id: user.id,
       provider: providerName,
       provider_id: profile.id,
       access_token,
@@ -91,7 +99,7 @@ async function handler(providerName, request, reply) {
 
   user = await UserModel.findOne(
     UserModel.buildCriteria('id', user.id), {
-      columns: '*,socialLogins.*'
+      columns: '*,social_logins.*'
     }
   );
 

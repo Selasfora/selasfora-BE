@@ -79,7 +79,7 @@ export default class BaseModel extends Model {
   */
   // eslint-disable-next-line no-unused-vars
   $beforeUpdate(opt, queryContext) {
-    this.updatedAt = new Date().toISOString();
+    this.updated_at = new Date().toISOString();
     this.presaveHook();
     return Promise.all([this.$validateHook()]);
   }

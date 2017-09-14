@@ -28,7 +28,7 @@ export default class User extends BaseModel {
       last_name: Joi.string().trim().min(1).max(255).description('Last Name'),
       password: Joi.string().trim().alphanum().min(1).max(30).description('Password'),
       access_token: Joi.string().trim().description('Access token'),
-      refresh_token: Joi.string().trim().description('Refresh token'),
+      refresh_token: Joi.string().trim().description('access_token in case of facebook; refresh_token in case of Google ; token_secret in case of twitter'),
       phone: Joi.string().trim().allow('', null).description('Phone Number'),
       reset_password_token: Joi.string().trim().description('Reset password token')
     };
@@ -66,7 +66,7 @@ export default class User extends BaseModel {
         modelClass: `${__dirname}/socialLogin`,
         join: {
           from: 'users.id',
-          to: 'social_logins.userId'
+          to: 'social_logins.user_id'
         }
       }
     };

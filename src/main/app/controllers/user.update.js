@@ -82,6 +82,6 @@ const handler = (server) => {
 };
 
 module.exports = {
-  enabled: false,
+  enabled: true,
   operation: handler
 };

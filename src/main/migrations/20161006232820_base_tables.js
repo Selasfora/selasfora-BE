@@ -31,7 +31,7 @@ exports.up = function up(knex, Promise) {
       table.string('reset_password_token').comment('Reset Password Token; is valid till reset_password_sentAt + admin.reset_time');
       table.timestamp('reset_password_sent_at').comment('Reset Password Sent At TimeStamps');
 
-      table.integer('shopify_customer_id').comment('Shopify Customer Id');
+      table.string('shopify_customer_id').comment('Shopify Customer Id');
 
       table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
       table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());

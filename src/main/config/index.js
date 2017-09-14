@@ -81,7 +81,7 @@ const config = {
   },
   // Forgot password configureation
   emailVerification: {
-    verificationUrl: `${process.env.WEB_APP_URL || 'http://localhost:3000'}/verifyEmail`,
+    verificationUrl: `${process.env.WEB_APP_URL || 'http://localhost:8081/api/users'}/verifyEmail`,
     fromEmail: process.env.SUPPORT_FROM_EMAIL || 'support@selasfora.com'
   },
   // auth-jwt strategy for sesssion.
@@ -99,13 +99,15 @@ const config = {
   social: {
     facebook: {
       clientID: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      profileUrl: 'https://graph.facebook.com/me'
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET
     },
     google: {
       clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      profileUrl: 'https://www.googleapis.com/plus/v1/people/me'
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+    },
+    twitter: {
+      consumerKey: process.env.TWITTER_KEY,
+      consumerSecret: process.env.TWITTER_SECRET
     }
   },
   mailer: {

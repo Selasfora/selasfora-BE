@@ -1,6 +1,6 @@
 import socialAuthSignup from '../commons/socialAuth.signup';
 
 module.exports = {
-  enabled: false,
+  enabled: true,
   operation: socialAuthSignup('facebook')
 };

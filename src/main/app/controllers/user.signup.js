@@ -7,6 +7,7 @@ import RedisClient from '../commons/redisClient';
 import Constants from '../commons/constants';
 import Mailer from '../commons/mailer';
 import Config from '../../config';
+import Shopify from '../commons/shopify';
 
 const inspect = Util.inspect;
 const validator = UserModel.validatorRules();
@@ -38,18 +39,27 @@ const options = {
       const user = await UserModel.findOne(UserModel.buildCriteria('email', request.payload.email));
 
       // Error out if email already exists.
-      if (!user) {
+      if (user) {
         return reply(Boom.notFound('Email has already been taken'));
       }
+
+      // Link the Account to Shopify and store back the shopify_customer_id.
+      // NEEDS: "Customer details and customer groups" READ-WRITE PERMISSION
+      // Minimal data to create shopify users...just to make it pass.
+      const customer_details = {
+        email: request.payload.email,
+        first_name: request.payload.first_name
+      };
+      const customer = await Shopify.customer.create(customer_details);
 
       const userObject = _.clone(request.payload);
       userObject.encrypted_password = request.payload.password;
       delete userObject.password;
+      delete userObject.password_confirmation;
       userObject.confirmation_token = Math.floor(100000 + (Math.random() * 900000));
       userObject.confirmation_sent_at = new Date();
+      userObject.shopify_customer_id = customer.id;
       const result = await UserModel.createOrUpdate(userObject);
-
-      // TODO: Link the Account to Shopify and store back the shopify_customer_id.
 
       // on successful, create login_token for this user.
       const sessionId = Uuid.v4();
@@ -88,6 +98,6 @@ const handler = (server) => {
 };
 
 module.exports = {
-  enabled: false,
+  enabled: true,
   operation: handler
 };
