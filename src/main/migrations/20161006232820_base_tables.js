@@ -22,7 +22,7 @@ exports.up = function up(knex, Promise) {
 
       table.string('phone', 15).comment('Phone Number');
       table.string('gender', 2).comment('Gender');
-      table.string('dob', 2).comment('Date Of Birth');
+      table.string('dob').comment('Date Of Birth');
 
       // Email Verification
       table.string('confirmation_token', 15).index().comment('Email Verification Token');
