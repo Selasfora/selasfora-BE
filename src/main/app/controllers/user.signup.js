@@ -2,6 +2,7 @@ import Util from 'util';
 import Boom from 'boom';
 import _ from 'lodash';
 import Uuid from 'node-uuid';
+import Logger from 'winston';
 import UserModel from '../models/user';
 import RedisClient from '../commons/redisClient';
 import Constants from '../commons/constants';
@@ -48,11 +49,16 @@ const options = {
       // Link the Account to Shopify and store back the shopify_customer_id.
       // NEEDS: "Customer details and customer groups" READ-WRITE PERMISSION
       // Minimal data to create shopify users...just to make it pass.
-      const customer_details = {
-        email: request.payload.email,
-        first_name: request.payload.first_name
-      };
-      const customer = await Shopify.customer.create(customer_details);
+      let customer = {};
+      try {
+        const customer_details = {
+          email: request.payload.email,
+          first_name: request.payload.first_name
+        };
+        customer = await Shopify.customer.create(customer_details);
+      } catch (err) {
+        Logger.err('failed to persist the customer :: ', err);
+      }
 
       const userObject = _.clone(request.payload);
       userObject.encrypted_password = request.payload.password;
