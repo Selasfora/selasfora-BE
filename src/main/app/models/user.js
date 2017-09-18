@@ -2,9 +2,9 @@
 import Bcrypt from 'bcrypt';
 import Logger from 'winston';
 import BaseJoi from 'joi';
+import Extension from 'joi-date-extensions';
 import BaseModel from './base';
 
-import Extension from 'joi-date-extensions';
 const Joi = BaseJoi.extend(Extension);
 
 export default class User extends BaseModel {

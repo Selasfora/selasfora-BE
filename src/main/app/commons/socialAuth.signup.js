@@ -3,6 +3,7 @@ import Uuid from 'node-uuid';
 import Util, {
   inspect
 } from 'util';
+import Logger from 'winston';
 import UserModel from '../models/user';
 import SocialLoginModel from '../models/socialLogin';
 import RedisClient from './redisClient';
@@ -65,11 +66,18 @@ async function handler(providerName, request, reply) {
     return reply(Boom.forbidden(Util.format(errorCodes.emailDuplicate, profile.email)));
   }
 
-  const customer_details = {
-    email: request.payload.email,
-    first_name: request.payload.first_name
-  };
-  const customer = await Shopify.customer.create(customer_details);
+  let customer = {};
+  try {
+    const customer_details = {
+      email: profile.email,
+      first_name: profile.first_name
+    };
+    customer = await Shopify.customer.create(customer_details);
+  } catch (err) {
+    Logger.error('failed to persist the customer :: ', err);
+
+    return reply(Boom.notFound('Failed to Create User'));
+  }
 
   const userObject = {
     first_name: profile.first_name || Uuid.v4(),

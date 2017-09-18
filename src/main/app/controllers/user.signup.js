@@ -25,7 +25,7 @@ const options = {
       first_name: validator.first_name.required(),
       last_name: validator.last_name.required(),
       gender: validator.gender.optional(),
-      dob: validator.dob.optional(),
+      dob: validator.dob.optional()
     }
   },
   plugins: {
@@ -57,7 +57,8 @@ const options = {
         };
         customer = await Shopify.customer.create(customer_details);
       } catch (err) {
-        Logger.err('failed to persist the customer :: ', err);
+        Logger.error('failed to persist the customer :: ', err);
+        return reply(Boom.notFound('Failed to Create User'));
       }
 
       const userObject = _.clone(request.payload);
