@@ -25,8 +25,10 @@ const options = {
       first_name: validator.first_name.optional(),
       last_name: validator.last_name.optional(),
       phone: validator.phone.optional(),
+      gender: validator.gender.optional(),
       old_password: validator.password.optional(),
-      new_password: validator.password.optional()
+      new_password: validator.password.optional(),
+      dob: validator.dob.optional()
     }
   },
   plugins: {
