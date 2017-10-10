@@ -1,7 +1,7 @@
 {
-  "name": "chefstalk",
+  "name": "selasfora",
   "version": "1.0.0",
-  "description": "ChefStalk v1.0 REST API Server",
+  "description": "Selasfora v1.0 REST API Server",
   "main": "build/index.js",
   "scripts": {
     "lint": "eslint src",
@@ -17,19 +17,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:indiez/chefstalk.git"
+    "url": "git@github.com:indiez/selasfora-be.git"
   },
   "keywords": [
-    "chefstalk",
+    "selasfora",
     "rest-api",
     "server"
   ],
   "author": "Manjunatha N",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/indiez/chefstalk/issues"
+    "url": "https://github.com/indiez/selasfora-be/issues"
   },
-  "homepage": "https://github.com/indiez/chefstalk#readme",
+  "homepage": "https://github.com/indiez/selasfora-be#readme",
   "dependencies": {
     "bcrypt": "^0.8.7",
     "blipp": "^2.3.0",
