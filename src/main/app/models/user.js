@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this,newline-per-chained-call */
-import Bcrypt from 'bcrypt';
+import Bcrypt from 'bcryptjs';
 import Logger from 'winston';
 import BaseJoi from 'joi';
 import Extension from 'joi-date-extensions';

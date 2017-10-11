@@ -11,6 +11,7 @@ Promise.promisifyAll(Redis.Multi.prototype);
 class RedisClient {
   constructor() {
     const redisConfig = Config.get('database').get('redis').toJS();
+    console.log(' :::: configuring redisClient ::: ', redisConfig);
     this.redisClient = Redis.createClient(redisConfig);
   }
 
