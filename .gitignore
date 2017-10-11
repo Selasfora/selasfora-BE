@@ -61,6 +61,8 @@ tt.js
 .vscode
 test.js
 
+.env*
+
 # environment specific variables
 .env
 .env.heroku
