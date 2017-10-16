@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import Bcrypt from 'bcrypt';
+import Bcrypt from 'bcryptjs';
 
 exports.up = function up(knex, Promise) {
   return Promise.all([
