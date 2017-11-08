@@ -124,6 +124,9 @@ const config = {
     shopName: process.env.SHOPIFY_SHOP_NAME,
     apiKey: process.env.SHOPIFY_API_KEY,
     password: process.env.SHOPIFY_PASSWORD
+  },
+  translateApi: {
+    projectId: process.env.GOOGLE_TRANSLATE_PROJECT_ID || 'optimal-mender-185308'
   }
 };
 

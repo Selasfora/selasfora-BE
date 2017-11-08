@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "optimal-mender-185308",
+  "private_key_id": "d97563c10a5b6fd81cc18bd33d7d62e84d671607",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDtza0SSBJ57Il0\nIJbH+puN+ZRcCQd2MfIX23NkL+1V9m+jUAgVJDKvXCw5XrDXleK0GIEJrNRZ6IS6\n2Wbd6r43kLIv5HYWm2S723oLVEmfx7hoKHwVhS7mJYDWlyJiog4ZDj+Ic0VAZHmh\n8bz28z5o1yLiV+f6npXdPfzL5XGTK2UIPxgH0bxckZcdRx/cu3YMsQD/X0TS+NeG\nPv/w6hMzxhrVqxw/eVseoHcwojNAODtIc2rsewWfWyO8GceAvFbYPbtjBs/J7IhB\n6wAtEiM7GpghIB4jaX/5XPr3ZnSvOLr71xiu3z94orMrScjmZjGCVj352Yi+xtWt\nMlWn+Oc1AgMBAAECggEANtGr1NPL/JLQUfakQ6fsHZO8BWZoc7EKVcEXTfB1dhRY\nAm4T2unMDFxDbps7SYtqJimi73vJvQsqs9cjjUNMw8rlpMA2D7qVQ3ASJ5Pv3/c+\ntbYleqGH4PKiy3UuLk4c0V5VO4uVGoW++1vae5Qx3iHADy0EE2Rk+EpOoSM8phfQ\nSsVOvbZtuVwoLQQfRV4O5HskBXx5tvfOMsQGINkW5KBhBleq4w4HgCmP7ZY4x8IB\n/Is0QW/qhpvv0tyXj/J3VL6RnVRh1ggQWW98atrnQy01pKk8P3VC3HhwwyFK+JIR\nZkgYaKRsp0y7g1gTrWlfGlYMohLQYW4D7kab2cVKaQKBgQD8SILNiJPn1Zk+bvmW\nCWI406G2nhqBjr1eMlyetqDPryQOiiGoV6dG75wNq9+G6ghEpSmyDwmxAM8gk0Qa\n90H+dpq++HikeZuKQEmGHFAmDZgRiEKxSFVK7RY1OzfX+YoOqwJMBznytY7VG+oJ\ncT9qkPErIfJ8FpZlr4eAMscRTQKBgQDxTo3mV/XT9GX5sWuBQGnT/Wih+puSkmuR\nwKrFw6NitcgMeksR/m9guZeI/tvjt6MYkKMHlaghkWk2efkEp4D9zYfz5h0cFf9w\nLnHIlSJ9CwCAdO9sG19EljdFtelZFJt0LOqhOI/LwrYDNear8QSogZ1qg7IODhf4\nqN6yJ7C5iQKBgQDaS9QDDN8Oh+DmCRimHtCC43zWi8/bsytgyqsiGlzj2GSWwCeH\nhvETjFm36rSsBO3KmC+QBzsXkd+oDEWuH61XBkG4ZT/e8esIob/875rakoC3CvTK\nehBzmNrSjL8xfpdbQdXm+4nE3h0Nge3s5bU9/NTxwZoUjWbt7giNgWKHMQKBgGWh\nYh5LmZulaXWahd6wFGJWbkUaWX+H74o5jTMxzJR8Xz7yGr//W0VvpSTrwgzMgQKN\nmDxPibppldh90qVlLuy2LbZJiqUTlrvWs9F5Dkd/5Lw1g8kSVjN62NihXyBHj5mE\neWVhfx6gaSw8/WQZZI7b2ELOKKXGxc3Swchi8wmRAoGBALZaa9hFfU3qS+z4X4bM\n3As5SR3zO4shx17Ihr7TwfvrD0a96ZMuayVjPiVgNQFSnvdlyzfZG8VgWPPM5Kq6\nY/WsjLB1MD3lqe7FTq2l8o+TSVUK2srmTHKr3u+2SkXSyR4aub2nPxTDyRrRRtBg\nyjQTcOhGO5kB58dJ1DcAkeGK\n-----END PRIVATE KEY-----\n",
+  "client_email": "selasfora-dev@optimal-mender-185308.iam.gserviceaccount.com",
+  "client_id": "101305820435705677530",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/selasfora-dev%40optimal-mender-185308.iam.gserviceaccount.com"
+}

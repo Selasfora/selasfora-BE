@@ -11,7 +11,7 @@ import Bootstrap from './app/bootstrap';
 import Logger from './app/commons/logger';
 
 // require('newrelic');
-
+process.env.GOOGLE_APPLICATION_CREDENTIALS = require('path').join('./selasfora-d97563c10a5b.json')
 console.log(Date.now(), '::: bootstraping ::::: ');
 // create server instance
 const server = Bootstrap.server(Config);
