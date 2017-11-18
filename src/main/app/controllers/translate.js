@@ -22,7 +22,8 @@ const options = {
       text: Joi.array().items(Joi.string())
         .description('comma-separated list of text')
         .required(),
-      target: Joi.string().required().description('translate language')
+      target: Joi.string().required().description('translate language'),
+      format: Joi.string().optional().description('text or html;').default('html')
     }
   },
   plugins: {
@@ -32,7 +33,13 @@ const options = {
   },
   handler: async(request, reply) => {
     try {
-      const translations = await translate.translate(request.payload.text, request.payload.target);
+      const options = {
+        from: 'en',
+        to: request.payload.target,
+        format: request.payload.format || 'html'
+      };
+
+      const translations = await translate.translate(request.payload.text, options);
       return reply(translations);
     } catch (err) {
       request.log(['error', __filename], `handler failed: ${inspect(err)}`);
