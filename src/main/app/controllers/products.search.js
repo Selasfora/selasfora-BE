@@ -21,7 +21,7 @@ const options = {
         .description('Page to show')
         .optional(),
 
-      product_type: Joi.string().trim().default('charm').allow(['charm', 'bracelet'])
+      product_type: Joi.string().trim().default('charm').allow(['charm', 'bracelet', 'collection'])
         .description('Product Type')
         .optional(),
 
