@@ -20,11 +20,9 @@ const options = {
       page: Joi.number().integer().positive().default(1)
         .description('Page to show')
         .optional(),
-
-      product_type: Joi.string().trim().default('charm').allow(['charm', 'bracelet', 'collection'])
+      product_type: Joi.string().trim().default('charm').allow(['charm', 'bracelet'])
         .description('Product Type')
         .optional(),
-
       color: Joi.string().trim()
         .description('Product Color')
         .optional(),
