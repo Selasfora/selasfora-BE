@@ -2,10 +2,13 @@ import _ from 'lodash';
 import Joi from 'joi';
 import Util from 'util';
 import Boom from 'boom';
+import requestPromise from 'request-promise';
 import Constants from '../commons/constants';
 import Shopify from '../commons/shopify';
+import Config from '../../config';
 
 const inspect = Util.inspect;
+const shopifyConfig = Config.get('shopify').toJS();
 
 const options = {
   auth: Constants.AUTH.ALL,
@@ -13,6 +16,9 @@ const options = {
   tags: ['api'],
   validate: {
     query: {
+      collection_handle: Joi.string().trim()
+        .description('Collection Handle')
+        .optional(),
       limit: Joi.number().integer().positive().default(50)
         .max(250)
         .description('Amount of results')
@@ -33,7 +39,7 @@ const options = {
         .description('Mood')
         .optional(),
       sort_by: Joi.string().trim()
-        .description('Sort By')
+        .description('Sort By; Allowed "Newest", "Highest Price" and "Lowest Price" ')
         .optional(),
 
       min_price: Joi.number().integer().positive()
@@ -52,13 +58,35 @@ const options = {
   handler: async(request, reply) => {
     try {
       const params = {
-        published_status: 'published',
-        limit: request.query.limit,
-        page: request.query.page,
+        // published_status: 'published',
+        // limit: request.query.limit,
+        // page: request.query.page,
         product_type: request.query.product_type
       };
 
-      const products = await Shopify.product.list(params);
+      let products;
+      if (request.query.collection_handle) {
+        // Basically we'll have to fetch the product listing via this API -
+        // https://selafore-staging.myshopify.com/collections/{collection-handle}/products.json
+        // example
+        // https://selafore-staging.myshopify.com/collections/daily-life-collection/products.json
+
+        const uri = `https://${shopifyConfig.shopName}.myshopify.com/collections/${request.query.collection_handle}/products.json`;
+
+        const opts = {
+          uri,
+          headers: {
+            'User-Agent': 'Request-Promise' // Required otherwise shopify throws 403 error
+          },
+          json: true // Automatically parses the JSON string in the response
+        };
+
+        const prdResponse = await requestPromise(opts);
+        products = prdResponse.products;
+      } else {
+        products = await Shopify.product.list(params);
+      }
+
       let final_products = [];
 
       const filters = {
@@ -82,8 +110,8 @@ const options = {
 
             product.average_price = average_price;
 
-            if ((variant.price <= filters.max_price &&
-                variant.price >= filters.min_price) ||
+            if ((variant.price >= filters.max_price &&
+                variant.price <= filters.min_price) ||
               _.includes(filters.material, variant.option3) ||
               _.includes(filters.mood, variant.option1) ||
               _.includes(filters.color, variant.option2)) {

@@ -60,6 +60,7 @@ tt.js
 #vscode
 .vscode
 test.js
+translate.js
 
 .env*
 

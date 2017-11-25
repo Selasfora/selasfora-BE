@@ -2,9 +2,8 @@ import _ from 'lodash';
 import Joi from 'joi';
 import Util from 'util';
 import Boom from 'boom';
-import Constants from '../commons/constants';
-import Shopify from '../commons/shopify';
 import Translate from '@google-cloud/translate';
+import Constants from '../commons/constants';
 import Config from '../../config';
 
 const inspect = Util.inspect;
@@ -33,13 +32,13 @@ const options = {
   },
   handler: async(request, reply) => {
     try {
-      const options = {
+      const opts = {
         from: 'en',
         to: request.payload.target,
         format: request.payload.format || 'html'
       };
 
-      const translations = await translate.translate(request.payload.text, options);
+      const translations = await translate.translate(request.payload.text, opts);
       return reply(translations);
     } catch (err) {
       request.log(['error', __filename], `handler failed: ${inspect(err)}`);
