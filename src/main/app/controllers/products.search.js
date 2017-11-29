@@ -23,7 +23,7 @@ const options = {
         .max(250)
         .description('Amount of results')
         .optional(),
-      page: Joi.number().integer().positive().default(1)
+      page: Joi.number().integer().min(0).default(0)
         .description('Page to show')
         .optional(),
       product_type: Joi.string().trim().default('charm').allow(['charm', 'bracelet'])
