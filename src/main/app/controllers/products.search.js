@@ -57,6 +57,9 @@ const options = {
   },
   handler: async(request, reply) => {
     try {
+      const limit = request.query.limit || 50;
+      const page = request.query.page || 0;
+
       const params = {
         // published_status: 'published',
         // limit: request.query.limit,
@@ -134,6 +137,7 @@ const options = {
         }
       }
 
+      final_products = _.nth(_.chunk(final_products, limit), page) || [];
       return reply(final_products);
     } catch (err) {
       request.log(['error', __filename], `handler failed: ${inspect(err)}`);
