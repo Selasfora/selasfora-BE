@@ -3,6 +3,7 @@ import Joi from 'joi';
 import Util from 'util';
 import Boom from 'boom';
 import Constants from '../commons/constants';
+import Mailer from '../commons/mailer';
 import NewsletterModel from '../models/newsletter';
 
 const inspect = Util.inspect;
@@ -26,6 +27,8 @@ const options = {
   handler: async(request, reply) => {
     try {
       const newsletter = await NewsletterModel.createOrUpdate(request.payload);
+      await Mailer.dispatchMail('subscribe', 'admin@selasfora.com', request.payload.email, {});
+
       return reply(newsletter).code(201);
     } catch (err) {
       request.log(['error', __filename], `handler failed: ${inspect(err)}`);
