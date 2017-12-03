@@ -108,7 +108,7 @@ exports.up = function up(knex, Promise) {
       console.log('Created Table: mood_filter_options table');
     }),
 
-    knex.schema.createTableIfNotExists('newsletter', (table) => {
+    knex.schema.createTableIfNotExists('newsletters', (table) => {
       table.increments('id').primary();
       table.string('email').notNullable().comment('Email');
       table.boolean('is_active').notNullable().comment('Is Active').defaultTo(true);
