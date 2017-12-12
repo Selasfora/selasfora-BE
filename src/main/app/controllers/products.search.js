@@ -60,13 +60,6 @@ const options = {
       const limit = request.query.limit || 50;
       const page = request.query.page || 0;
 
-      const params = {
-        // published_status: 'published',
-        // limit: request.query.limit,
-        // page: request.query.page,
-        product_type: request.query.product_type
-      };
-
       let products;
       if (request.query.collection_handle) {
         // Basically we'll have to fetch the product listing via this API -
@@ -87,6 +80,10 @@ const options = {
         const prdResponse = await requestPromise(opts);
         products = prdResponse.products;
       } else {
+        const params = {
+          product_type: request.query.product_type
+        };
+
         products = await Shopify.product.list(params);
       }
 
@@ -96,37 +93,48 @@ const options = {
         color: _.compact(_.words(request.query.color, /[^, ]+/g)),
         material: _.compact(_.words(request.query.material, /[^, ]+/g)),
         mood: _.compact(_.words(request.query.mood, /[^, ]+/g)),
-        max_price: request.query.max_price || -1,
-        min_price: request.query.min_price || 100000000000000
+        max_price: request.query.max_price || 0,
+        min_price: request.query.min_price || 0
       };
-
-      const sort_by_parameter = request.query.sort_by ? request.query.sort_by : undefined;
 
       if (!_.isEmpty(filters.color) || !_.isEmpty(filters.material) || !_.isEmpty(filters.mood) ||
         filters.max_price || filters.min_price) {
         for (const product of products) {
-          let average_price = 0;
+          product.average_price = _.max(_.map(product.variants, 'price'));
+        }
+
+        _.each(products, product => {
           for (const variant of product.variants) {
-            if (variant.price >= average_price) {
-              average_price = variant.price;
-            }
+            // console.log('variant.price :: ', variant.price);
+            // console.log('variant.option1 :: ', variant.option1, " - ", filters.mood);
+            // console.log('variant.option2 :: ', variant.option2, " - ", filters.color);
+            // console.log('variant.option3 :: ', variant.option3, " - ", filters.material);
 
-            product.average_price = average_price;
+            // console.log('max price criteria :: ', (filters.max_price === 0 || variant.price <= filters.max_price));
+            // console.log('min price criteria :: ', (filters.min_price === 0 || variant.price >= filters.min_price));
+            // console.log('option1 criteria :: ', (_.isEmpty(filters.mood) || (!_.isEmpty(filters.mood) && _.includes(filters.mood, variant.option1))));
+            // console.log('option2 criteria :: ', (_.isEmpty(filters.color) || (!_.isEmpty(filters.color) && _.includes(filters.color, variant.option2))));
+            // console.log('option3 criteria :: ', (_.isEmpty(filters.material) || (!_.isEmpty(filters.material) && _.includes(filters.material, variant.option3))));
 
-            if ((variant.price >= filters.max_price &&
-                variant.price <= filters.min_price) ||
-              _.includes(filters.material, variant.option3) ||
-              _.includes(filters.mood, variant.option1) ||
-              _.includes(filters.color, variant.option2)) {
+            const satified = (
+              (filters.max_price === 0 || variant.price <= filters.max_price) &&
+              (filters.min_price === 0 || variant.price >= filters.min_price) &&
+              (_.isEmpty(filters.mood) || (!_.isEmpty(filters.mood) && _.includes(filters.mood, variant.option1))) &&
+              (_.isEmpty(filters.color) || (!_.isEmpty(filters.color) && _.includes(filters.color, variant.option2))) &&
+              (_.isEmpty(filters.material) || (!_.isEmpty(filters.material) && _.includes(filters.material, variant.option3)))
+            );
+
+            if (satified) {
               final_products.push(product);
               break;
             }
           }
-        }
+        });
       } else {
         final_products = products;
       }
 
+      const sort_by_parameter = request.query.sort_by ? request.query.sort_by : undefined;
       if (sort_by_parameter) {
         if (sort_by_parameter === 'Newest') {
           final_products = _.reverse(_.sortBy(final_products, ['created_at']));
