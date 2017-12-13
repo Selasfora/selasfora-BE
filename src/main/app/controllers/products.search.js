@@ -23,7 +23,7 @@ const options = {
         .max(250)
         .description('Amount of results')
         .optional(),
-      page: Joi.number().integer().min(0).default(0)
+      page: Joi.number().integer().min(1).default(1)
         .description('Page to show')
         .optional(),
       product_type: Joi.string().trim().default('charm').allow(['charm', 'bracelet'])
@@ -58,7 +58,7 @@ const options = {
   handler: async(request, reply) => {
     try {
       const limit = request.query.limit || 50;
-      const page = request.query.page || 0;
+      const page = ((request.query.page || 1) - 1);
 
       let products;
       if (request.query.collection_handle) {
