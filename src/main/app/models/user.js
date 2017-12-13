@@ -44,26 +44,6 @@ export default class User extends BaseModel {
     this.hashPassword();
   }
 
-  // static async findByUserNameOrEmail(email, userName) {
-  //   const records = this.query()
-  //     .where('email', _.toLower(email || userName))
-  //     .orWhere('userName', _.toLower(userName || email));
-
-  //   return await records;
-  // }
-
-  // static async findByTypeAndNameOrId(type, name, id) {
-  //   const records = this.query()
-  //     .where({
-  //       type
-  //     })
-  //     .andWhere((builder) => {
-  //       builder.where('id', id).orWhere('userName', _.toLower(name));
-  //     });
-
-  //   return await records;
-  // }
-
   static get relationMappings() {
     return {
       social_logins: {
