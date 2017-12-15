@@ -1,19 +1,19 @@
 exports.seed = (knex, Promise) => {
   const records = [{
-    name: 'red',
+    name: 'Red',
     code: '#FF0000'
   }, {
-    name: 'cyan',
-    code: '#00FFFF'
-  }, {
-    name: 'blue',
+    name: 'Blue',
     code: '#0000FF'
   }, {
-    name: 'dark blue',
-    code: '#0000A0'
+    name: 'Green',
+    code: '#00FF00'
   }, {
-    name: 'yellow',
-    code: '#FFFF00'
+    name: 'Purple',
+    code: '#800080'
+  }, {
+    name: 'White',
+    code: '#FFFFFF'
   }];
 
   return Promise.all([

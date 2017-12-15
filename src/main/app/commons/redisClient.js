@@ -1,4 +1,4 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable class-methods-use-this,no-console */
 import Redis from 'redis';
 import Promise from 'bluebird';
 import Logger from 'winston';

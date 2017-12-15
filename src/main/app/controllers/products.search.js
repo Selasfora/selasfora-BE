@@ -90,9 +90,9 @@ const options = {
       let final_products = [];
 
       const filters = {
-        color: _.compact(_.words(request.query.color, /[^, ]+/g)),
-        material: _.compact(_.words(request.query.material, /[^, ]+/g)),
-        mood: _.compact(_.words(request.query.mood, /[^, ]+/g)),
+        color: _.map(_.compact(_.words(request.query.color, /[^, ]+/g)), _.toLower),
+        material: _.map(_.compact(_.words(request.query.material, /[^, ]+/g)), _.toLower),
+        // mood: _.compact(_.words(request.query.mood, /[^, ]+/g)),
         max_price: request.query.max_price || 0,
         min_price: request.query.min_price || 0
       };
@@ -103,25 +103,15 @@ const options = {
           product.average_price = _.max(_.map(product.variants, 'price'));
         }
 
-        _.each(products, product => {
+        _.each(products, (product) => {
           for (const variant of product.variants) {
-            // console.log('variant.price :: ', variant.price);
-            // console.log('variant.option1 :: ', variant.option1, " - ", filters.mood);
-            // console.log('variant.option2 :: ', variant.option2, " - ", filters.color);
-            // console.log('variant.option3 :: ', variant.option3, " - ", filters.material);
-
-            // console.log('max price criteria :: ', (filters.max_price === 0 || variant.price <= filters.max_price));
-            // console.log('min price criteria :: ', (filters.min_price === 0 || variant.price >= filters.min_price));
-            // console.log('option1 criteria :: ', (_.isEmpty(filters.mood) || (!_.isEmpty(filters.mood) && _.includes(filters.mood, variant.option1))));
-            // console.log('option2 criteria :: ', (_.isEmpty(filters.color) || (!_.isEmpty(filters.color) && _.includes(filters.color, variant.option2))));
-            // console.log('option3 criteria :: ', (_.isEmpty(filters.material) || (!_.isEmpty(filters.material) && _.includes(filters.material, variant.option3))));
-
             const satified = (
               (filters.max_price === 0 || variant.price <= filters.max_price) &&
               (filters.min_price === 0 || variant.price >= filters.min_price) &&
-              (_.isEmpty(filters.mood) || (!_.isEmpty(filters.mood) && _.includes(filters.mood, variant.option1))) &&
-              (_.isEmpty(filters.color) || (!_.isEmpty(filters.color) && _.includes(filters.color, variant.option2))) &&
-              (_.isEmpty(filters.material) || (!_.isEmpty(filters.material) && _.includes(filters.material, variant.option3)))
+              // eslint-disable-next-line max-len
+              // (_.isEmpty(filters.mood) || (!_.isEmpty(filters.mood) && _.includes(filters.mood, variant.option1))) &&
+              (_.isEmpty(filters.color) || (!_.isEmpty(filters.color) && _.includes(filters.color, _.toLower(variant.option2)))) && // eslint-disable-line max-len
+              (_.isEmpty(filters.material) || (!_.isEmpty(filters.material) && _.includes(filters.material, _.toLower(variant.option3)))) // eslint-disable-line max-len
             );
 
             if (satified) {

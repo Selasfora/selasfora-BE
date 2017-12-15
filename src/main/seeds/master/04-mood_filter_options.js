@@ -1,14 +1,10 @@
 exports.seed = (knex, Promise) => {
   const records = [{
-    name: 'Summer Staples'
+    name: 'Party'
   }, {
-    name: 'Urban Summer'
+    name: 'Date night'
   }, {
-    name: 'Novel Romance'
-  }, {
-    name: 'Conscious Exclusive'
-  }, {
-    name: 'The Rule of Coo'
+    name: 'Romantic'
   }];
 
   return Promise.all([

@@ -1,12 +1,8 @@
 exports.seed = (knex, Promise) => {
   const records = [{
-    name: 'Silver'
-  }, {
     name: 'Ceramic'
   }, {
-    name: 'Metallic'
-  }, {
-    name: 'Chrome'
+    name: 'Metal'
   }];
 
   return Promise.all([
