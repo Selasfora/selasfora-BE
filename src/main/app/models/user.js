@@ -29,7 +29,7 @@ export default class User extends BaseModel {
       }).description('Email'),
       first_name: Joi.string().trim().min(1).max(255).description('First Name'),
       last_name: Joi.string().trim().min(1).max(255).description('Last Name'),
-      password: Joi.string().trim().alphanum().min(1).max(30).description('Password'),
+      password: Joi.string().trim().min(6).max(16).description('Password'),
       access_token: Joi.string().trim().description('Access token'),
       refresh_token: Joi.string().trim().description('access_token in case of facebook; refresh_token in case of Google ; token_secret in case of twitter'),
       phone: Joi.number().integer().allow('', null).description('Phone Number'),
