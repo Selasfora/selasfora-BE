@@ -13,7 +13,7 @@ export default class User extends BaseModel {
   }
 
   static entityFilteringScope() {
-    const filteredFields = ['dob', 'encrypted_password', 'password_salt', 'confirmation_token', 'confirmed_at', 'confirmation_sent_at', 'reset_password_token', 'reset_password_sent_at', 'social_logins'];
+    const filteredFields = ['encrypted_password', 'password_salt', 'confirmation_token', 'confirmed_at', 'confirmation_sent_at', 'reset_password_token', 'reset_password_sent_at', 'social_logins'];
     return {
       admin: filteredFields,
       user: filteredFields,
