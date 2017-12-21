@@ -133,6 +133,10 @@ export default function socialSignUp(providerName) {
     description: `Login or Signup via ${providerName} - Access - ALL`,
     tags: ['api'],
     validate: {
+      options: {
+        allowUnknown: true,
+        stripUnknown: true
+      },
       payload: {
         access_token: validator.access_token.required(),
         refresh_token: validator.refresh_token.optional()
@@ -156,7 +160,7 @@ export default function socialSignUp(providerName) {
         }
       }
     },
-    handler: async(request, reply) => {
+    handler: async (request, reply) => {
       try {
         return await handler(providerName, request, reply);
       } catch (err) {

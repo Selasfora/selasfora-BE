@@ -27,7 +27,10 @@ export default class Social {
       case 'twitter':
         return await new Promise((resolve, reject) => {
           TwitterStrategy.userProfile(params.access_token, params.token_secret, {}, (err, response) => { // eslint-disable-line max-len
-            if (err) return reject(new Error(`No response from ${this.provider}`));
+            if (err) {
+              console.log('TwitterStrategy error: ', err);
+              return reject(new Error(`No response from ${this.provider}`));
+            }
             return resolve(response);
           });
         });
@@ -35,7 +38,10 @@ export default class Social {
       case 'facebook':
         return await new Promise((resolve, reject) => {
           FacebookStrategy.userProfile(params.access_token, (err, response) => {
-            if (err) return reject(new Error(`No response from ${this.provider}`));
+            if (err) {
+              console.log('FacebookStrategy error: ', err);
+              return reject(new Error(`No response from ${this.provider}`));
+            }
             return resolve(response);
           });
         });
@@ -43,7 +49,10 @@ export default class Social {
       case 'google':
         return await new Promise((resolve, reject) => {
           GoogleStrategy.userProfile(params.access_token, (err, response) => {
-            if (err) return reject(new Error(`No response from ${this.provider}`));
+            if (err) {
+              console.log('GoogleStrategy error: ', err);
+              return reject(new Error(`No response from ${this.provider}`));
+            }
             return resolve(response);
           });
         });
