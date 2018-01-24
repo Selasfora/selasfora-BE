@@ -20,7 +20,7 @@ const options = {
       responses: _.omit(Constants.API_STATUS_CODES, [200])
     }
   },
-  handler: async(request, reply) => {
+  handler: async (request, reply) => {
     // Fetch user with provided email
     let user = await UserModel.findOne(UserModel.buildCriteria('email', request.payload.email));
     if (!user) {
@@ -33,7 +33,7 @@ const options = {
     user = await UserModel.createOrUpdate(user);
 
     // Construct web app url for email verification
-    const verificationUrl = `${Config.get('emailVerification').get('verificationUrl')}?email=${user.email}&verification_code=${user.confirmation_token}`;
+    const verificationUrl = `${Config.get('emailVerification').get('verificationUrl')}?email=${encodeURIComponent(user.email)}&verification_code=${user.confirmation_token}`;
 
     await Mailer.dispatchMail('welcome-email', 'admin@selasfora.com', user.email, {
       user,

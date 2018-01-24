@@ -33,7 +33,7 @@ const options = {
       responses: _.omit(Constants.API_STATUS_CODES, [200])
     }
   },
-  handler: async(request, reply) => {
+  handler: async (request, reply) => {
     try {
       if (request.payload.password !== request.payload.password_confirmation) {
         return reply(Boom.notFound('Password confirmation doesn\'t match Password'));
@@ -82,7 +82,7 @@ const options = {
       result.session_token = request.server.methods.sessionsSign(session);
 
       // Construct web app url for email verification
-      const verificationUrl = `${Config.get('emailVerification').get('verificationUrl')}?email=${result.email}&verificationCode=${result.confirmation_token}`;
+      const verificationUrl = `${Config.get('emailVerification').get('verificationUrl')}?email=${encodeURIComponent(result.email)}&verificationCode=${result.confirmation_token}`;
 
       await Mailer.dispatchMail('welcome-email', 'admin@selasfora.com', result.email, {
         user: result,
