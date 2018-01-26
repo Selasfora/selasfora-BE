@@ -1,10 +1,12 @@
 import Util from 'util';
 import Boom from 'boom';
 import _ from 'lodash';
+import Uuid from 'node-uuid';
 import JWT from 'jsonwebtoken';
 import UserModel from '../models/user';
 import Config from '../../config';
 import Constants from '../commons/constants';
+import RedisClient from '../commons/redisClient';
 
 const inspect = Util.inspect;
 const validator = UserModel.validatorRules();
@@ -28,7 +30,7 @@ const options = {
       responses: _.omit(Constants.API_STATUS_CODES, [201])
     }
   },
-  handler: async(request, reply) => {
+  handler: async (request, reply) => {
     try {
       request.log(['info', __filename], `payload:: ${inspect(request.payload)}`);
 
@@ -57,6 +59,17 @@ const options = {
       user.reset_password_token = null;
       user.encrypted_password = request.payload.password;
       const updatedUser = await UserModel.createOrUpdate(user);
+
+      // on successful, create login_token for this user.
+      const sessionId = Uuid.v4();
+      const session = await request.server.asyncMethods.sessionsAdd(sessionId, {
+        id: sessionId,
+        userId: updatedUser.id
+      });
+
+      await RedisClient.saveSession(updatedUser.id, sessionId, session);
+      // sign the token
+      updatedUser.session_token = request.server.methods.sessionsSign(session);
 
       request.log(['info', __filename], `updated response - ${inspect(updatedUser)}`);
       return reply(updatedUser);

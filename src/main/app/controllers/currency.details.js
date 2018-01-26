@@ -4,7 +4,6 @@ import Util from 'util';
 import Boom from 'boom';
 import requestPromise from 'request-promise';
 import Constants from '../commons/constants';
-import Shopify from '../commons/shopify';
 
 const inspect = Util.inspect;
 

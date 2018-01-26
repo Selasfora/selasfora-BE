@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Joi from 'joi';
 import Util from 'util';
 import Boom from 'boom';
 import Constants from '../commons/constants';

@@ -1,7 +1,9 @@
 import Boom from 'boom';
 import _ from 'lodash';
+import Uuid from 'node-uuid';
 import UserModel from '../models/user';
 import Constants from '../commons/constants';
+import RedisClient from '../commons/redisClient';
 
 const validator = UserModel.validatorRules();
 const options = {
@@ -19,7 +21,7 @@ const options = {
       responses: _.omit(Constants.API_STATUS_CODES, [200])
     }
   },
-  handler: async(request, reply) => {
+  handler: async (request, reply) => {
     // Fetch user with provided email
     const user = await UserModel.findOne(UserModel.buildCriteria('email', request.query.email));
 
@@ -35,6 +37,17 @@ const options = {
     // Reset token and create hash from password
     user.confirmed_at = new Date();
     const updatedUser = await UserModel.createOrUpdate(user);
+
+    // on successful, create login_token for this user.
+    const sessionId = Uuid.v4();
+    const session = await request.server.asyncMethods.sessionsAdd(sessionId, {
+      id: sessionId,
+      userId: updatedUser.id
+    });
+
+    await RedisClient.saveSession(updatedUser.id, sessionId, session);
+    // sign the token
+    updatedUser.session_token = request.server.methods.sessionsSign(session);
     return reply(updatedUser);
   }
 };
